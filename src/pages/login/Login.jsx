@@ -1,62 +1,63 @@
-import { useContext } from "react";
-import { AuthContext } from "../../context/AuthContext";
-import axios from "axios";
 import "./Login.css";
 import logo_vertical from "../../assets/logo_vertical.png";
-
-const client = axios.create({
-  baseURL: "http://127.0.0.1:3000/api/user",
-});
+import { useForm } from "react-hook-form";
+import { AuthContext } from "../../context/AuthContext.jsx";
+import { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { getToken } from "../../helpers/Token";
 
 export default function Login() {
-  const { token, setToken } = useContext(AuthContext);
+  const navigate = useNavigate();
+  let { logIn } = useContext(AuthContext);
 
-  async function getToken() {
-    let response = await client.post("/login", {
-      email: "michael@unicesar.edu.co",
-      password: "Empanada123#",
-    });
-    setToken(response.data.token);
-  }
-
-  const enviar = () => {
-    getToken();
-
-    if (!token) {
-      return "no token";
-    }
+  const enviar = async (data) => {
+    let response = await getToken(data);
+    logIn(response.token, response.user);
+    navigate("/repositories/todos/byRate/1");
   };
+
+  const { register, handleSubmit } = useForm();
 
   return (
     <>
-      <div className="container">
-        <div className="imagen">
+      <div className="login_container">
+        <div className="login_imagen">
           <img src={logo_vertical} alt="logo repo upc" />
         </div>
-        <form id="login">
-          <label htmlFor="email">Correo electrónico</label>
+        <form id="login" onSubmit={handleSubmit(enviar)}>
+          <label htmlFor="login_email" className="login_label">
+            Correo electrónico
+          </label>
           <input
+            {...register("email")}
             type="email"
             name="email"
-            id="email"
+            id="login_email"
+            className="login_input"
             placeholder="ejemplo@unicesar.edu.co"
+            required
           />
-          <label htmlFor="password">Contraseña</label>
+          <label htmlFor="login_password" className="login_label">
+            Contraseña
+          </label>
           <input
+            {...register("password")}
             type="password"
             name="password"
-            id="password"
+            id="login_password"
+            className="login_input"
             placeholder="********"
+            required
           />
-          <a href="" className="olvido">
+          <a href="" className="login_olvido">
             Olvidó su contraseña?
           </a>
-          <button type="submit" id="enviar">
+          <button type="submit" id="login_enviar">
             ACCEDER
           </button>
-          <a href="" className="crear">
+          <Link to={"/register"} className="login_crear">
             Crear una cuenta
-          </a>
+          </Link>
         </form>
       </div>
     </>

@@ -1,12 +1,25 @@
 import { createContext, useState } from "react";
-
 export const AuthContext = createContext({});
 
 export function ContextProvider({ children }) {
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState("");
+  const [user, setUser] = useState({});
+  const [search, setSearch] = useState("");
+
+  const logIn = (token, user) => {
+    setUser(user);
+    setToken(token);
+  };
+
+  const logOut = () => {
+    setUser({});
+    setToken("");
+  };
 
   return (
-    <AuthContext.Provider value={{ token, setToken }}>
+    <AuthContext.Provider
+      value={{ user, token, logIn, logOut, search, setSearch }}
+    >
       {children}
     </AuthContext.Provider>
   );
