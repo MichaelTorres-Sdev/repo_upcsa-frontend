@@ -23,7 +23,7 @@ function CreateProject() {
   };
 
   useEffect(() => {
-    if (user.status != "aprobado") {
+    if (user.status == "no aprobado") {
       navigate("/test");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

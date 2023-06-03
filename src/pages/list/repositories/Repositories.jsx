@@ -37,9 +37,7 @@ function Repositories() {
       response = await searchRepositories(token, page, search);
       setPages(response.pages);
       setRepositories(response.repositories);
-    }
-
-    if (type == "todos") {
+    } else if (type == "todos") {
       switch (order) {
         case "byRate":
           response = await listAllRepoByRate(token, page);

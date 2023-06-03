@@ -11,9 +11,6 @@ function Searchbar() {
   const detectEnter = (e) => {
     let keyCode = e.keyCode || e.which;
     if (keyCode == 13) {
-      if (e.target.value == "") {
-        navigate("/repositories/todos/byRate/1");
-      }
       setSearch(e.target.value);
       navigate("/repositories/search/byRate/1");
     }
