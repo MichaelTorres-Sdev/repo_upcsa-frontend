@@ -8,6 +8,7 @@ import {
   listAllRepoByName,
   listAllRepoByRate,
   searchRepositories,
+  getMyRepositories,
 } from "../../../helpers/Http";
 import { AuthContext } from "../../../context/AuthContext";
 import { Link, useParams } from "react-router-dom";
@@ -30,6 +31,7 @@ function Repositories() {
     if (params.type == "aula") newType = "proyecto de aula";
     if (params.type == "grado") newType = "proyecto de grado";
     if (params.type == "invest") newType = "proyecto de investigación";
+    if (params.type == "mine") newType = "mine";
 
     if (type == "search" && search) {
       response = await searchRepositories(token, page, search);
@@ -57,11 +59,10 @@ function Repositories() {
         default:
           break;
       }
-    } else if (type != "search") {
+    } else if (type != "search" && type != "mine") {
       switch (order) {
         case "byRate":
           response = await listRepoByRate(token, newType, page);
-          console.log(response);
           setPages(response.pages);
           setRepositories(response.repositories);
           break;
@@ -78,12 +79,16 @@ function Repositories() {
         default:
           break;
       }
+    } else {
+      response = await getMyRepositories(token, page);
+      setPages(response.pages);
+      setRepositories(response.repositories);
     }
   };
 
   useEffect(() => {
     order(token, params.type, params.sort, params.page);
-  }, [params, token, search]);
+  }, [params.type, token, search, params.page, params.sort]);
 
   return (
     <>
@@ -127,7 +132,9 @@ function Repositories() {
         {parseInt(params.page) > 1 ? (
           <Link
             className="projects_navigation-navegator navegator1"
-            to={`/repositories/${params.sort}/${parseInt(params.page) - 1}`}
+            to={`/repositories/${params.type}/${params.sort}/${
+              parseInt(params.page) - 1
+            }`}
           >
             {"<"}
           </Link>
@@ -138,7 +145,9 @@ function Repositories() {
         {parseInt(params.page) < pages ? (
           <Link
             className="projects_navigation-navegator navegator2"
-            to={`/repositories/${params.sort}/${parseInt(params.page) + 1}`}
+            to={`/repositories/${params.type}/${params.sort}/${
+              parseInt(params.page) + 1
+            }`}
           >
             {">"}
           </Link>

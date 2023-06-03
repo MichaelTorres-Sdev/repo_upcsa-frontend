@@ -7,13 +7,13 @@ import Login from "./pages/login/Login.jsx";
 import Index from "./pages/index/Index.jsx";
 import Error from "./pages/error/Error";
 import Register from "./pages/register/Register.jsx";
-import Repository from "./pages/repository/Repository.jsx";
 import Request from "./pages/request/Request.jsx";
 import User from "./pages/user/User.jsx";
-import ListRequests from "./pages/list/requests/Requests.jsx";
+import Requests from "./pages/list/requests/Requests.jsx";
 import ProtectRoute from "./components/ProtectRoute";
 import Repositories from "./pages/list/repositories/Repositories.jsx";
 import CreateProject from "./pages/project/CreateProject";
+import Test from "./pages/test/Test";
 
 const router = createBrowserRouter([
   {
@@ -27,10 +27,10 @@ const router = createBrowserRouter([
     errorElement: <Error />,
   },
   {
-    path: "/repository",
+    path: "/test",
     element: (
       <ProtectRoute>
-        <Repository />
+        <Test />
       </ProtectRoute>
     ),
     errorElement: <Error />,
@@ -54,10 +54,10 @@ const router = createBrowserRouter([
     errorElement: <Error />,
   },
   {
-    path: "/requests",
+    path: "/requests/:page?",
     element: (
       <ProtectRoute>
-        <ListRequests />
+        <Requests />
       </ProtectRoute>
     ),
     errorElement: <Error />,

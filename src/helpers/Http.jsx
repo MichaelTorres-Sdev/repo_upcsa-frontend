@@ -119,3 +119,67 @@ export async function searchRepositories(token, page, text) {
     console.log(e);
   }
 }
+
+export async function changeUserStatus(token) {
+  try {
+    let response = await user.put(
+      "/changeStatus",
+      {},
+      {
+        headers: { Authorization: token },
+      }
+    );
+    return response.data;
+  } catch (e) {
+    alert("no se pudo actualizar el usuario");
+    console.log(e);
+  }
+}
+
+export async function createRepository(token, repo) {
+  try {
+    let response = await repository.post("/create", repo, {
+      headers: { Authorization: token },
+    });
+    return response.data;
+  } catch (e) {
+    alert("no se pudo crear el repositorio");
+    console.log(e);
+  }
+}
+
+export async function getMyRepositories(token, page) {
+  try {
+    let response = await repository.get(`/mine/${page}`, {
+      headers: { Authorization: token },
+    });
+    return response.data;
+  } catch (e) {
+    alert("no se pudo obtener los repositorios");
+    console.log(e);
+  }
+}
+
+export async function listPendingRepositories(token, page) {
+  try {
+    let response = await repository.get(`/listPending/${page}`, {
+      headers: { Authorization: token },
+    });
+    return response.data;
+  } catch (e) {
+    alert("no se pudo obtener los repositorios");
+    console.log(e);
+  }
+}
+
+export async function changeRepoStatus(token, status) {
+  try {
+    let response = await repository.put(`/changeStatus`, status, {
+      headers: { Authorization: token },
+    });
+    return response.data;
+  } catch (e) {
+    alert("no se pudo actualizar el repositorio");
+    console.log(e);
+  }
+}

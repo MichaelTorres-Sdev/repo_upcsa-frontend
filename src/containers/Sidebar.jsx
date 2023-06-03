@@ -1,8 +1,11 @@
 import { Link, useParams } from "react-router-dom";
 import logo_horizontal from "../assets/logo_horizontal.png";
 import "./Sidebar.css";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext.jsx";
 
 function Sidebar() {
+  const { user } = useContext(AuthContext);
   const params = useParams();
   return (
     <div className="sidebar">
@@ -69,7 +72,17 @@ function Sidebar() {
           </Link>
         </div>
         <div className="sidebar_link">
-          <Link className="sidebar_link-text">Mis proyectos</Link>
+          <Link
+            to={"/repositories/mine/byRate/1"}
+            style={
+              params.type == "mine"
+                ? { backgroundColor: "#2F2F2F", color: "#5FD068" }
+                : null
+            }
+            className="sidebar_link-text"
+          >
+            Mis proyectos
+          </Link>
         </div>
         <div className="sidebar_link">
           <Link className="sidebar_link-text">Acerca de</Link>
@@ -80,6 +93,15 @@ function Sidebar() {
         <div className="sidebar_link">
           <Link className="sidebar_link-text">Notas de la versión</Link>
         </div>
+        {user.role == "admin" ? (
+          <div className="sidebar_link">
+            <Link to={"/requests/1"} className="sidebar_link-text">
+              Peticiones
+            </Link>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );
