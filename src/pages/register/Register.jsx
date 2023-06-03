@@ -17,8 +17,9 @@ function Register() {
       alert("solo se puede registrar con un correo de la UPC");
     } else {
       let response = await registerUser(data);
-      console.log(response);
-      navigate("/");
+      if (response) {
+        navigate("/login");
+      }
     }
   };
 

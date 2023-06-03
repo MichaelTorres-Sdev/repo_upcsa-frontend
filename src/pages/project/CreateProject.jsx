@@ -16,7 +16,10 @@ function CreateProject() {
       tagsArray = tagsArray.split(",");
       data.tags = tagsArray;
     }
-    await createRepository(token, data);
+    let response = await createRepository(token, data);
+    if (response) {
+      alert("repositorio creado exitosamente");
+    }
   };
 
   useEffect(() => {

@@ -42,88 +42,100 @@ function Requests() {
   }, [params.page, counter]);
 
   return (
-    <div className="requests_projects">
-      <div className="repositories">
-        {repositories.map((repo) => (
-          <div key={repo._id} className="requests_projects-project">
-            <div className="request_repository">
-              <div className="index_repository-title">
-                <p className="index_repository-title-text">{repo.title}</p>
-              </div>
-              <div className="index_repository-description">
-                <p className="index_repository-description-text">
-                  {repo.description}
-                </p>
-              </div>
-              <div className="request_repository-info">
-                <div className="index_repository-info-tags">
-                  <p className="index_repository-info-tags-label">Etiquetas:</p>
-                  <p className="index_repository-info-tags-items">
-                    {repo.tags.map((tag) => tag + ", ")}
+    <>
+      <div className="create_project_navigation">
+        <Link
+          className="create_project_navigation-button"
+          to={"/repositories/todos/byRate/1"}
+        >
+          {"< REGRESAR"}
+        </Link>
+      </div>
+      <div className="requests_projects">
+        <div className="repositories">
+          {repositories.map((repo) => (
+            <div key={repo._id} className="requests_projects-project">
+              <div className="request_repository">
+                <div className="index_repository-title">
+                  <p className="index_repository-title-text">{repo.title}</p>
+                </div>
+                <div className="index_repository-description">
+                  <p className="index_repository-description-text">
+                    {repo.description}
                   </p>
                 </div>
-                <div className="index_repository-info-links">
-                  <Link
-                    target="_blank"
-                    to={repo.link}
-                    className="index_repository-info-links-button-link"
-                  >
-                    Ir a GitHub
-                  </Link>
-                  <img
-                    src={robot}
-                    alt="user image"
-                    className="index_repository-info-links-avatar"
-                  />
+                <div className="request_repository-info">
+                  <div className="index_repository-info-tags">
+                    <p className="index_repository-info-tags-label">
+                      Etiquetas:
+                    </p>
+                    <p className="index_repository-info-tags-items">
+                      {repo.tags.map((tag) => tag + ", ")}
+                    </p>
+                  </div>
+                  <div className="index_repository-info-links">
+                    <Link
+                      target="_blank"
+                      to={repo.link}
+                      className="index_repository-info-links-button-link"
+                    >
+                      Ir a GitHub
+                    </Link>
+                    <img
+                      src={robot}
+                      alt="user image"
+                      className="index_repository-info-links-avatar"
+                    />
+                  </div>
                 </div>
               </div>
+              <div className="requests_projects-project-buttons">
+                <button
+                  className="requests_projects-project-buttons-button"
+                  onClick={async () => allowRepo(repo._id)}
+                >
+                  Aprobar
+                </button>
+                <button
+                  type="button"
+                  onClick={async () => denyRepo(repo._id)}
+                  className="requests_projects-project-buttons-button"
+                >
+                  Denegar
+                </button>
+              </div>
             </div>
-            <div className="requests_projects-project-buttons">
-              <button
-                className="requests_projects-project-buttons-button"
-                onClick={async () => allowRepo(repo._id)}
-              >
-                Aprobar
-              </button>
-              <button
-                type="button"
-                onClick={async () => denyRepo(repo._id)}
-                className="requests_projects-project-buttons-button"
-              >
-                Denegar
-              </button>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
+        <div className="projects_navigation">
+          {parseInt(params.page) > 1 ? (
+            <Link
+              className="projects_navigation-navegator navegator1"
+              to={`/repositories/${params.type}/${params.sort}/${
+                parseInt(params.page) - 1
+              }`}
+            >
+              {"<"}
+            </Link>
+          ) : (
+            <div className="projects_navigation-navegator navegator1"></div>
+          )}
+          <p className="projects_navigation-indicator">{params.page}</p>
+          {parseInt(params.page) < pages ? (
+            <Link
+              className="projects_navigation-navegator navegator2"
+              to={`/repositories/${params.type}/${params.sort}/${
+                parseInt(params.page) + 1
+              }`}
+            >
+              {">"}
+            </Link>
+          ) : (
+            <div className="projects_navigation-navegator navegator2"></div>
+          )}
+        </div>
       </div>
-      <div className="projects_navigation">
-        {parseInt(params.page) > 1 ? (
-          <Link
-            className="projects_navigation-navegator navegator1"
-            to={`/repositories/${params.type}/${params.sort}/${
-              parseInt(params.page) - 1
-            }`}
-          >
-            {"<"}
-          </Link>
-        ) : (
-          <div className="projects_navigation-navegator navegator1"></div>
-        )}
-        <p className="projects_navigation-indicator">{params.page}</p>
-        {parseInt(params.page) < pages ? (
-          <Link
-            className="projects_navigation-navegator navegator2"
-            to={`/repositories/${params.type}/${params.sort}/${
-              parseInt(params.page) + 1
-            }`}
-          >
-            {">"}
-          </Link>
-        ) : (
-          <div className="projects_navigation-navegator navegator2"></div>
-        )}
-      </div>
-    </div>
+    </>
   );
 }
 
